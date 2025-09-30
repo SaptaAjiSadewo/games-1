@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survival Emoji: Neo Brutalism</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1>🛡️ Survival Emoji: Neo Brutalism</h1>
+        
+        <div class="game-area">
+            <div class="world-container">
+                <div id="game-world">
+                    <!-- Player, monsters, dan resources akan di-generate oleh JavaScript -->
+                </div>
+            </div>
+            
+            <div class="info-panel">
+                <div class="status">
+                    <h2>Status Player</h2>
+                    <div class="stats" id="player-stats">
+                        <!-- Status akan diisi oleh JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="inventory">
+                    <h2>Inventory</h2>
+                    <div class="resources" id="inventory">
+                        <!-- Inventory akan diisi oleh JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="crafting">
+                    <h2>Crafting</h2>
+                    <div class="crafting-options" id="crafting-options">
+                        <!-- Opsi crafting akan diisi oleh JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button id="craft-btn">Craft (C)</button>
+            <button id="collect-btn">Collect (E)</button>
+            <button id="attack-btn">Attack (Space)</button>
+            <button id="reset-btn">Reset Game</button>
+        </div>
+        
+        <div class="instructions">
+            <h2>Kontrol Game:</h2>
+            <p>Gerakan: W, A, S, D | Collect Resource: E | Craft: C | Attack: Space</p>
+            <p>Tujuan: Kumpulkan resource, buat alat, dan bertahan hidup melawan monster!</p>
+        </div>
+    </div>
+
+    <script src="characters.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
