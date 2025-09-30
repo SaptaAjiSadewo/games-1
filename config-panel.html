@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game Configuration - Survival Emoji</title>
+    <style>
+      :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #3498db;
+        --accent-color: #e74c3c;
+        --light-color: #ecf0f1;
+        --dark-color: #2c3e50;
+        --success-color: #2ecc71;
+        --warning-color: #f39c12;
+        --danger-color: #e74c3c;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      header {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 20px 0;
+        text-align: center;
+        border-radius: 8px 8px 0 0;
+        margin-bottom: 20px;
+      }
+
+      header h1 {
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+      }
+
+      header p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+      }
+
+      .config-tabs {
+        display: flex;
+        background-color: var(--dark-color);
+        border-radius: 8px 8px 0 0;
+        overflow: hidden;
+      }
+
+      .tab-btn {
+        flex: 1;
+        padding: 15px;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .tab-btn.active {
+        background-color: var(--secondary-color);
+        font-weight: bold;
+      }
+
+      .tab-btn:hover:not(.active) {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .tab-content {
+        display: none;
+        padding: 25px;
+        background-color: white;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      .config-section {
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .config-section h3 {
+        color: var(--primary-color);
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid var(--secondary-color);
+        display: inline-block;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: #555;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+        transition: border-color 0.3s;
+      }
+
+      .form-control:focus {
+        border-color: var(--secondary-color);
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+      }
+
+      .emoji-preview {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+      }
+
+      .emoji-display {
+        font-size: 2rem;
+        margin-right: 10px;
+      }
+
+      .monster-item,
+      .resource-item,
+      .crafted-item {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        border-left: 4px solid var(--secondary-color);
+      }
+
+      .monster-item h4,
+      .resource-item h4,
+      .crafted-item h4 {
+        margin-bottom: 10px;
+        color: var(--primary-color);
+      }
+
+      .action-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+      }
+
+      .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: 600;
+      }
+
+      .btn-primary {
+        background-color: var(--secondary-color);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background-color: #2980b9;
+      }
+
+      .btn-secondary {
+        background-color: #95a5a6;
+        color: white;
+      }
+
+      .btn-secondary:hover {
+        background-color: #7f8c8d;
+      }
+
+      .btn-success {
+        background-color: var(--success-color);
+        color: white;
+      }
+
+      .btn-success:hover {
+        background-color: #27ae60;
+      }
+
+      .code-preview {
+        background-color: #2d2d2d;
+        color: #f8f8f2;
+        padding: 20px;
+        border-radius: 6px;
+        margin-top: 20px;
+        font-family: "Courier New", monospace;
+        white-space: pre-wrap;
+        overflow-x: auto;
+        max-height: 400px;
+        overflow-y: auto;
+      }
+
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        background-color: var(--success-color);
+        color: white;
+        border-radius: 4px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transform: translateX(150%);
+        transition: transform 0.3s ease;
+        z-index: 1000;
+      }
+
+      .notification.show {
+        transform: translateX(0);
+      }
+
+      @media (max-width: 768px) {
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .action-buttons {
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .btn {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>🛡️ Survival Emoji Configuration</h1>
+        <p>
+          Atur karakter, monster, dan konfigurasi game sesuai keinginan Anda
+        </p>
+      </header>
+
+      <div class="config-tabs">
+        <button class="tab-btn active" data-tab="characters">Characters</button>
+        <button class="tab-btn" data-tab="game-config">Game Config</button>
+        <button class="tab-btn" data-tab="preview">Code Preview</button>
+      </div>
+
+      <!-- Characters Tab -->
+      <div id="characters" class="tab-content active">
+        <div class="config-section">
+          <h3>Player Settings</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="player-emoji">Player Emoji</label>
+              <input
+                type="text"
+                id="player-emoji"
+                class="form-control"
+                value="😎"
+                maxlength="2"
+              />
+              <div class="emoji-preview">
+                <div class="emoji-display" id="player-emoji-preview">😎</div>
+                <div>Preview</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="player-size">Player Size</label>
+              <input
+                type="number"
+                id="player-size"
+                class="form-control"
+                value="40"
+                min="20"
+                max="60"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="player-speed">Player Speed</label>
+              <input
+                type="number"
+                id="player-speed"
+                class="form-control"
+                value="5"
+                min="1"
+                max="10"
+                step="0.5"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="player-maxHealth">Player Max Health</label>
+              <input
+                type="number"
+                id="player-maxHealth"
+                class="form-control"
+                value="100"
+                min="50"
+                max="200"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="config-section">
+          <h3>Monsters Settings</h3>
+
+          <div id="monsters-container">
+            <!-- Monster items will be added here dynamically -->
+          </div>
+
+          <button
+            id="add-monster"
+            class="btn btn-secondary"
+            style="margin-top: 10px"
+          >
+            + Add Monster
+          </button>
+        </div>
+
+        <div class="config-section">
+          <h3>Resources Settings</h3>
+
+          <div id="resources-container">
+            <!-- Resource items will be added here dynamically -->
+          </div>
+        </div>
+
+        <div class="config-section">
+          <h3>Crafted Items Settings</h3>
+
+          <div id="crafted-items-container">
+            <!-- Crafted items will be added here dynamically -->
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <button id="reset-characters" class="btn btn-secondary">
+            Reset to Default
+          </button>
+          <button id="save-characters" class="btn btn-primary">
+            Save Characters Config
+          </button>
+        </div>
+      </div>
+
+      <!-- Game Config Tab -->
+      <div id="game-config" class="tab-content">
+        <div class="config-section">
+          <h3>World Settings</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="world-width">World Width</label>
+              <input
+                type="number"
+                id="world-width"
+                class="form-control"
+                value="800"
+                min="400"
+                max="1200"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="world-height">World Height</label>
+              <input
+                type="number"
+                id="world-height"
+                class="form-control"
+                value="500"
+                min="300"
+                max="800"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="config-section">
+          <h3>Collision Settings</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="collect-distance">Collect Distance</label>
+              <input
+                type="number"
+                id="collect-distance"
+                class="form-control"
+                value="30"
+                min="10"
+                max="100"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="combat-distance">Combat Distance</label>
+              <input
+                type="number"
+                id="combat-distance"
+                class="form-control"
+                value="35"
+                min="10"
+                max="100"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="attack-distance">Attack Distance</label>
+              <input
+                type="number"
+                id="attack-distance"
+                class="form-control"
+                value="50"
+                min="20"
+                max="150"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="config-section">
+          <h3>Spawn Settings</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="initial-monsters">Initial Monsters</label>
+              <input
+                type="number"
+                id="initial-monsters"
+                class="form-control"
+                value="4"
+                min="1"
+                max="20"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="max-monsters">Max Monsters</label>
+              <input
+                type="number"
+                id="max-monsters"
+                class="form-control"
+                value="8"
+                min="1"
+                max="30"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="monster-spawn-rate">Monster Spawn Rate</label>
+              <input
+                type="number"
+                id="monster-spawn-rate"
+                class="form-control"
+                value="1"
+                min="0.1"
+                max="5"
+                step="0.1"
+              />
+            </div>
+          </div>
+
+          <h4 style="margin-top: 20px">Resource Counts</h4>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="wood-count">Wood Count</label>
+              <input
+                type="number"
+                id="wood-count"
+                class="form-control"
+                value="15"
+                min="5"
+                max="50"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="stone-count">Stone Count</label>
+              <input
+                type="number"
+                id="stone-count"
+                class="form-control"
+                value="12"
+                min="5"
+                max="50"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="food-count">Food Count</label>
+              <input
+                type="number"
+                id="food-count"
+                class="form-control"
+                value="10"
+                min="5"
+                max="50"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="water-count">Water Count</label>
+              <input
+                type="number"
+                id="water-count"
+                class="form-control"
+                value="8"
+                min="5"
+                max="50"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="config-section">
+          <h3>Player Settings</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="base-speed">Base Speed</label>
+              <input
+                type="number"
+                id="base-speed"
+                class="form-control"
+                value="5"
+                min="1"
+                max="10"
+                step="0.5"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="base-health">Base Health</label>
+              <input
+                type="number"
+                id="base-health"
+                class="form-control"
+                value="100"
+                min="50"
+                max="200"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="hunger-decay">Hunger Decay</label>
+              <input
+                type="number"
+                id="hunger-decay"
+                class="form-control"
+                value="0.08"
+                min="0.01"
+                max="0.5"
+                step="0.01"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="thirst-decay">Thirst Decay</label>
+              <input
+                type="number"
+                id="thirst-decay"
+                class="form-control"
+                value="0.12"
+                min="0.01"
+                max="0.5"
+                step="0.01"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="damage-taken">Damage Taken</label>
+              <input
+                type="number"
+                id="damage-taken"
+                class="form-control"
+                value="1"
+                min="0.5"
+                max="5"
+                step="0.5"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="config-section">
+          <h3>Game Loop Settings</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="game-loop-interval">Game Loop Interval (ms)</label>
+              <input
+                type="number"
+                id="game-loop-interval"
+                class="form-control"
+                value="150"
+                min="50"
+                max="500"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <button id="reset-game-config" class="btn btn-secondary">
+            Reset to Default
+          </button>
+          <button id="save-game-config" class="btn btn-primary">
+            Save Game Config
+          </button>
+        </div>
+      </div>
+
+      <!-- Code Preview Tab -->
+      <div id="preview" class="tab-content">
+        <div class="config-section">
+          <h3>Characters.js</h3>
+          <div class="code-preview" id="characters-code">
+            // Code will be generated here
+          </div>
+        </div>
+
+        <div class="config-section">
+          <h3>GameConfig.js</h3>
+          <div class="code-preview" id="game-config-code">
+            // Code will be generated here
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <button id="copy-characters" class="btn btn-secondary">
+            Copy Characters Code
+          </button>
+          <button id="copy-game-config" class="btn btn-secondary">
+            Copy Game Config Code
+          </button>
+          <button id="copy-all" class="btn btn-success">Copy All Code</button>
+        </div>
+      </div>
+
+      <div id="notification" class="notification">
+        Configuration saved successfully!
+      </div>
+    </div>
+
+    <script>
+      // Default configuration
+      const defaultCharacters = {
+        player: {
+          emoji: "😎",
+          size: 40,
+          speed: 5,
+          maxHealth: 100,
+        },
+        monsters: [
+          {
+            type: "goblin",
+            emoji: "👹",
+            size: 35,
+            speed: 1.2,
+            maxHealth: 30,
+            damage: 6,
+          },
+          {
+            type: "ghost",
+            emoji: "👻",
+            size: 35,
+            speed: 1.8,
+            maxHealth: 25,
+            damage: 5,
+          },
+          {
+            type: "zombie",
+            emoji: "🧟",
+            size: 35,
+            speed: 0.9,
+            maxHealth: 40,
+            damage: 8,
+          },
+        ],
+        resources: {
+          wood: {
+            emoji: "🌲",
+            size: 30,
+          },
+          stone: {
+            emoji: "🪨",
+            size: 30,
+          },
+          food: {
+            emoji: "🍎",
+            size: 25,
+          },
+          water: {
+            emoji: "💧",
+            size: 25,
+          },
+        },
+        craftedItems: {
+          sword: {
+            emoji: "⚔️",
+            description: "Meningkatkan damage serangan",
+          },
+          shield: {
+            emoji: "🛡️",
+            description: "Mengurangi damage dari monster",
+          },
+          shelter: {
+            emoji: "🏠",
+            description: "Memulihkan kesehatan",
+          },
+        },
+      };
+
+      const defaultGameConfig = {
+        WORLD: {
+          WIDTH: 800,
+          HEIGHT: 500,
+        },
+        COLLISION: {
+          COLLECT_DISTANCE: 30,
+          COMBAT_DISTANCE: 35,
+          ATTACK_DISTANCE: 50,
+        },
+        SPAWN: {
+          INITIAL_MONSTERS: 4,
+          MAX_MONSTERS: 8,
+          MONSTER_SPAWN_RATE: 1,
+          RESOURCES: {
+            WOOD: 15,
+            STONE: 12,
+            FOOD: 10,
+            WATER: 8,
+          },
+        },
+        PLAYER: {
+          BASE_SPEED: 5,
+          BASE_HEALTH: 100,
+          HUNGER_DECAY: 0.08,
+          THIRST_DECAY: 0.12,
+          DAMAGE_TAKEN: 1,
+        },
+        GAME_LOOP: {
+          INTERVAL: 150,
+        },
+      };
+
+      // Current configuration
+      let currentCharacters = JSON.parse(JSON.stringify(defaultCharacters));
+      let currentGameConfig = JSON.parse(JSON.stringify(defaultGameConfig));
+
+      // DOM Elements
+      const tabBtns = document.querySelectorAll(".tab-btn");
+      const tabContents = document.querySelectorAll(".tab-content");
+      const notification = document.getElementById("notification");
+
+      // Initialize the UI
+      document.addEventListener("DOMContentLoaded", function () {
+        initializeTabs();
+        loadCharactersConfig();
+        loadGameConfig();
+        generateCodePreview();
+
+        // Add event listeners
+        document
+          .getElementById("player-emoji")
+          .addEventListener("input", updatePlayerEmojiPreview);
+        document
+          .getElementById("add-monster")
+          .addEventListener("click", addNewMonster);
+        document
+          .getElementById("reset-characters")
+          .addEventListener("click", resetCharacters);
+        document
+          .getElementById("save-characters")
+          .addEventListener("click", saveCharacters);
+        document
+          .getElementById("reset-game-config")
+          .addEventListener("click", resetGameConfig);
+        document
+          .getElementById("save-game-config")
+          .addEventListener("click", saveGameConfig);
+        document
+          .getElementById("copy-characters")
+          .addEventListener("click", copyCharactersCode);
+        document
+          .getElementById("copy-game-config")
+          .addEventListener("click", copyGameConfigCode);
+        document
+          .getElementById("copy-all")
+          .addEventListener("click", copyAllCode);
+      });
+
+      // Tab functionality
+      function initializeTabs() {
+        tabBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const tabId = btn.getAttribute("data-tab");
+
+            // Update active tab button
+            tabBtns.forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+
+            // Show active tab content
+            tabContents.forEach((content) =>
+              content.classList.remove("active")
+            );
+            document.getElementById(tabId).classList.add("active");
+
+            // Regenerate code preview when switching to preview tab
+            if (tabId === "preview") {
+              generateCodePreview();
+            }
+          });
+        });
+      }
+
+      // Load characters configuration into the form
+      function loadCharactersConfig() {
+        // Player settings
+        document.getElementById("player-emoji").value =
+          currentCharacters.player.emoji;
+        document.getElementById("player-size").value =
+          currentCharacters.player.size;
+        document.getElementById("player-speed").value =
+          currentCharacters.player.speed;
+        document.getElementById("player-maxHealth").value =
+          currentCharacters.player.maxHealth;
+
+        updatePlayerEmojiPreview();
+
+        // Monsters
+        const monstersContainer = document.getElementById("monsters-container");
+        monstersContainer.innerHTML = "";
+
+        currentCharacters.monsters.forEach((monster, index) => {
+          monstersContainer.appendChild(createMonsterElement(monster, index));
+        });
+
+        // Resources
+        const resourcesContainer = document.getElementById(
+          "resources-container"
+        );
+        resourcesContainer.innerHTML = "";
+
+        Object.keys(currentCharacters.resources).forEach((resourceKey) => {
+          const resource = currentCharacters.resources[resourceKey];
+          resourcesContainer.appendChild(
+            createResourceElement(resource, resourceKey)
+          );
+        });
+
+        // Crafted Items
+        const craftedContainer = document.getElementById(
+          "crafted-items-container"
+        );
+        craftedContainer.innerHTML = "";
+
+        Object.keys(currentCharacters.craftedItems).forEach((itemKey) => {
+          const item = currentCharacters.craftedItems[itemKey];
+          craftedContainer.appendChild(createCraftedItemElement(item, itemKey));
+        });
+      }
+
+      // Load game configuration into the form
+      function loadGameConfig() {
+        // World settings
+        document.getElementById("world-width").value =
+          currentGameConfig.WORLD.WIDTH;
+        document.getElementById("world-height").value =
+          currentGameConfig.WORLD.HEIGHT;
+
+        // Collision settings
+        document.getElementById("collect-distance").value =
+          currentGameConfig.COLLISION.COLLECT_DISTANCE;
+        document.getElementById("combat-distance").value =
+          currentGameConfig.COLLISION.COMBAT_DISTANCE;
+        document.getElementById("attack-distance").value =
+          currentGameConfig.COLLISION.ATTACK_DISTANCE;
+
+        // Spawn settings
+        document.getElementById("initial-monsters").value =
+          currentGameConfig.SPAWN.INITIAL_MONSTERS;
+        document.getElementById("max-monsters").value =
+          currentGameConfig.SPAWN.MAX_MONSTERS;
+        document.getElementById("monster-spawn-rate").value =
+          currentGameConfig.SPAWN.MONSTER_SPAWN_RATE;
+
+        // Resource counts
+        document.getElementById("wood-count").value =
+          currentGameConfig.SPAWN.RESOURCES.WOOD;
+        document.getElementById("stone-count").value =
+          currentGameConfig.SPAWN.RESOURCES.STONE;
+        document.getElementById("food-count").value =
+          currentGameConfig.SPAWN.RESOURCES.FOOD;
+        document.getElementById("water-count").value =
+          currentGameConfig.SPAWN.RESOURCES.WATER;
+
+        // Player settings
+        document.getElementById("base-speed").value =
+          currentGameConfig.PLAYER.BASE_SPEED;
+        document.getElementById("base-health").value =
+          currentGameConfig.PLAYER.BASE_HEALTH;
+        document.getElementById("hunger-decay").value =
+          currentGameConfig.PLAYER.HUNGER_DECAY;
+        document.getElementById("thirst-decay").value =
+          currentGameConfig.PLAYER.THIRST_DECAY;
+        document.getElementById("damage-taken").value =
+          currentGameConfig.PLAYER.DAMAGE_TAKEN;
+
+        // Game loop settings
+        document.getElementById("game-loop-interval").value =
+          currentGameConfig.GAME_LOOP.INTERVAL;
+      }
+
+      // Create monster form element
+      function createMonsterElement(monster, index) {
+        const monsterDiv = document.createElement("div");
+        monsterDiv.className = "monster-item";
+        monsterDiv.innerHTML = `
+                <h4>Monster ${
+                  index + 1
+                } <button type="button" class="btn btn-secondary" style="float: right; padding: 5px 10px; font-size: 0.8rem;" onclick="removeMonster(${index})">Remove</button></h4>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Type</label>
+                        <input type="text" class="form-control monster-type" value="${
+                          monster.type
+                        }" data-index="${index}">
+                    </div>
+                    <div class="form-group">
+                        <label>Emoji</label>
+                        <input type="text" class="form-control monster-emoji" value="${
+                          monster.emoji
+                        }" maxlength="2" data-index="${index}">
+                    </div>
+                    <div class="form-group">
+                        <label>Size</label>
+                        <input type="number" class="form-control monster-size" value="${
+                          monster.size
+                        }" min="20" max="60" data-index="${index}">
+                    </div>
+                    <div class="form-group">
+                        <label>Speed</label>
+                        <input type="number" class="form-control monster-speed" value="${
+                          monster.speed
+                        }" min="0.5" max="5" step="0.1" data-index="${index}">
+                    </div>
+                    <div class="form-group">
+                        <label>Max Health</label>
+                        <input type="number" class="form-control monster-maxHealth" value="${
+                          monster.maxHealth
+                        }" min="10" max="100" data-index="${index}">
+                    </div>
+                    <div class="form-group">
+                        <label>Damage</label>
+                        <input type="number" class="form-control monster-damage" value="${
+                          monster.damage
+                        }" min="1" max="20" data-index="${index}">
+                    </div>
+                </div>
+            `;
+
+        return monsterDiv;
+      }
+
+      // Create resource form element
+      function createResourceElement(resource, resourceKey) {
+        const resourceDiv = document.createElement("div");
+        resourceDiv.className = "resource-item";
+        resourceDiv.innerHTML = `
+                <h4>${
+                  resourceKey.charAt(0).toUpperCase() + resourceKey.slice(1)
+                }</h4>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Emoji</label>
+                        <input type="text" class="form-control resource-emoji" value="${
+                          resource.emoji
+                        }" maxlength="2" data-resource="${resourceKey}">
+                    </div>
+                    <div class="form-group">
+                        <label>Size</label>
+                        <input type="number" class="form-control resource-size" value="${
+                          resource.size
+                        }" min="20" max="60" data-resource="${resourceKey}">
+                    </div>
+                </div>
+            `;
+
+        return resourceDiv;
+      }
+
+      // Create crafted item form element
+      function createCraftedItemElement(item, itemKey) {
+        const itemDiv = document.createElement("div");
+        itemDiv.className = "crafted-item";
+        itemDiv.innerHTML = `
+                <h4>${itemKey.charAt(0).toUpperCase() + itemKey.slice(1)}</h4>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Emoji</label>
+                        <input type="text" class="form-control crafted-emoji" value="${
+                          item.emoji
+                        }" maxlength="2" data-item="${itemKey}">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" class="form-control crafted-description" value="${
+                          item.description
+                        }" data-item="${itemKey}">
+                    </div>
+                </div>
+            `;
+
+        return itemDiv;
+      }
+
+      // Add new monster
+      function addNewMonster() {
+        const newMonster = {
+          type: "new_monster",
+          emoji: "👾",
+          size: 35,
+          speed: 1.5,
+          maxHealth: 30,
+          damage: 5,
+        };
+
+        currentCharacters.monsters.push(newMonster);
+        loadCharactersConfig();
+      }
+
+      // Remove monster
+      function removeMonster(index) {
+        currentCharacters.monsters.splice(index, 1);
+        loadCharactersConfig();
+      }
+
+      // Update player emoji preview
+      function updatePlayerEmojiPreview() {
+        const emoji = document.getElementById("player-emoji").value;
+        document.getElementById("player-emoji-preview").textContent = emoji;
+      }
+
+      // Reset characters to default
+      function resetCharacters() {
+        if (
+          confirm(
+            "Are you sure you want to reset all character settings to default?"
+          )
+        ) {
+          currentCharacters = JSON.parse(JSON.stringify(defaultCharacters));
+          loadCharactersConfig();
+          showNotification("Characters reset to default");
+        }
+      }
+
+      // Reset game config to default
+      function resetGameConfig() {
+        if (
+          confirm(
+            "Are you sure you want to reset all game configuration to default?"
+          )
+        ) {
+          currentGameConfig = JSON.parse(JSON.stringify(defaultGameConfig));
+          loadGameConfig();
+          showNotification("Game configuration reset to default");
+        }
+      }
+
+      // Save characters configuration
+      function saveCharacters() {
+        // Update player settings
+        currentCharacters.player.emoji =
+          document.getElementById("player-emoji").value;
+        currentCharacters.player.size = parseInt(
+          document.getElementById("player-size").value
+        );
+        currentCharacters.player.speed = parseFloat(
+          document.getElementById("player-speed").value
+        );
+        currentCharacters.player.maxHealth = parseInt(
+          document.getElementById("player-maxHealth").value
+        );
+
+        // Update monsters
+        const monsterInputs = document.querySelectorAll(".monster-item input");
+        monsterInputs.forEach((input) => {
+          const index = parseInt(input.getAttribute("data-index"));
+          const property = input.className
+            .split(" ")[1]
+            .replace("monster-", "");
+
+          if (property === "type") {
+            currentCharacters.monsters[index][property] = input.value;
+          } else if (property === "emoji") {
+            currentCharacters.monsters[index][property] = input.value;
+          } else if (
+            property === "size" ||
+            property === "maxHealth" ||
+            property === "damage"
+          ) {
+            currentCharacters.monsters[index][property] = parseInt(input.value);
+          } else if (property === "speed") {
+            currentCharacters.monsters[index][property] = parseFloat(
+              input.value
+            );
+          }
+        });
+
+        // Update resources
+        const resourceInputs = document.querySelectorAll(
+          ".resource-item input"
+        );
+        resourceInputs.forEach((input) => {
+          const resourceKey = input.getAttribute("data-resource");
+          const property = input.className
+            .split(" ")[1]
+            .replace("resource-", "");
+
+          if (property === "emoji") {
+            currentCharacters.resources[resourceKey][property] = input.value;
+          } else if (property === "size") {
+            currentCharacters.resources[resourceKey][property] = parseInt(
+              input.value
+            );
+          }
+        });
+
+        // Update crafted items
+        const craftedInputs = document.querySelectorAll(".crafted-item input");
+        craftedInputs.forEach((input) => {
+          const itemKey = input.getAttribute("data-item");
+          const property = input.className
+            .split(" ")[1]
+            .replace("crafted-", "");
+
+          if (property === "emoji") {
+            currentCharacters.craftedItems[itemKey][property] = input.value;
+          } else if (property === "description") {
+            currentCharacters.craftedItems[itemKey][property] = input.value;
+          }
+        });
+
+        showNotification("Characters configuration saved");
+      }
+
+      // Save game configuration
+      function saveGameConfig() {
+        // Update world settings
+        currentGameConfig.WORLD.WIDTH = parseInt(
+          document.getElementById("world-width").value
+        );
+        currentGameConfig.WORLD.HEIGHT = parseInt(
+          document.getElementById("world-height").value
+        );
+
+        // Update collision settings
+        currentGameConfig.COLLISION.COLLECT_DISTANCE = parseInt(
+          document.getElementById("collect-distance").value
+        );
+        currentGameConfig.COLLISION.COMBAT_DISTANCE = parseInt(
+          document.getElementById("combat-distance").value
+        );
+        currentGameConfig.COLLISION.ATTACK_DISTANCE = parseInt(
+          document.getElementById("attack-distance").value
+        );
+
+        // Update spawn settings
+        currentGameConfig.SPAWN.INITIAL_MONSTERS = parseInt(
+          document.getElementById("initial-monsters").value
+        );
+        currentGameConfig.SPAWN.MAX_MONSTERS = parseInt(
+          document.getElementById("max-monsters").value
+        );
+        currentGameConfig.SPAWN.MONSTER_SPAWN_RATE = parseFloat(
+          document.getElementById("monster-spawn-rate").value
+        );
+
+        // Update resource counts
+        currentGameConfig.SPAWN.RESOURCES.WOOD = parseInt(
+          document.getElementById("wood-count").value
+        );
+        currentGameConfig.SPAWN.RESOURCES.STONE = parseInt(
+          document.getElementById("stone-count").value
+        );
+        currentGameConfig.SPAWN.RESOURCES.FOOD = parseInt(
+          document.getElementById("food-count").value
+        );
+        currentGameConfig.SPAWN.RESOURCES.WATER = parseInt(
+          document.getElementById("water-count").value
+        );
+
+        // Update player settings
+        currentGameConfig.PLAYER.BASE_SPEED = parseFloat(
+          document.getElementById("base-speed").value
+        );
+        currentGameConfig.PLAYER.BASE_HEALTH = parseInt(
+          document.getElementById("base-health").value
+        );
+        currentGameConfig.PLAYER.HUNGER_DECAY = parseFloat(
+          document.getElementById("hunger-decay").value
+        );
+        currentGameConfig.PLAYER.THIRST_DECAY = parseFloat(
+          document.getElementById("thirst-decay").value
+        );
+        currentGameConfig.PLAYER.DAMAGE_TAKEN = parseFloat(
+          document.getElementById("damage-taken").value
+        );
+
+        // Update game loop settings
+        currentGameConfig.GAME_LOOP.INTERVAL = parseInt(
+          document.getElementById("game-loop-interval").value
+        );
+
+        showNotification("Game configuration saved");
+      }
+
+      // Generate code preview
+      function generateCodePreview() {
+        // Generate characters.js code
+        let charactersCode = `export const Characters = ${JSON.stringify(
+          currentCharacters,
+          null,
+          2
+        )};`;
+        charactersCode = charactersCode.replace(/"([^"]+)":/g, "$1:");
+        document.getElementById("characters-code").textContent = charactersCode;
+
+        // Generate game-config.js code
+        let gameConfigCode = `export const GameConfig = ${JSON.stringify(
+          currentGameConfig,
+          null,
+          2
+        )};`;
+        gameConfigCode = gameConfigCode.replace(/"([^"]+)":/g, "$1:");
+        document.getElementById("game-config-code").textContent =
+          gameConfigCode;
+      }
+
+      // Copy characters code to clipboard
+      function copyCharactersCode() {
+        const code = document.getElementById("characters-code").textContent;
+        navigator.clipboard.writeText(code).then(() => {
+          showNotification("Characters code copied to clipboard");
+        });
+      }
+
+      // Copy game config code to clipboard
+      function copyGameConfigCode() {
+        const code = document.getElementById("game-config-code").textContent;
+        navigator.clipboard.writeText(code).then(() => {
+          showNotification("Game config code copied to clipboard");
+        });
+      }
+
+      // Copy all code to clipboard
+      function copyAllCode() {
+        const charactersCode =
+          document.getElementById("characters-code").textContent;
+        const gameConfigCode =
+          document.getElementById("game-config-code").textContent;
+        const allCode = `${charactersCode}\n\n${gameConfigCode}`;
+
+        navigator.clipboard.writeText(allCode).then(() => {
+          showNotification("All code copied to clipboard");
+        });
+      }
+
+      // Show notification
+      function showNotification(message) {
+        notification.textContent = message;
+        notification.classList.add("show");
+
+        setTimeout(() => {
+          notification.classList.remove("show");
+        }, 3000);
+      }
+    </script>
+  </body>
+</html>
